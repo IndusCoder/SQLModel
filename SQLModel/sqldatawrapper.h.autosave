@@ -1,0 +1,34 @@
+#ifndef SQLDATAWRAPPER_H
+#define SQLDATAWRAPPER_H
+
+#include <list>
+#include "fields.h"
+
+template <typename T>
+class SQLDataWrapper
+{
+    const SQLDataWrapper *m_FIELDS;
+    std::list<T*> m_fList;
+public:
+    template<typename R>
+    static SQLDataWrapper *createWrapper(const struct SQLDataFields *FIELDS)
+    {
+        int counter=0;
+        for(const struct SQLDataFields *field=FIELDS; field->name; ++field)
+        {
+            counter++;
+        }
+        if(!counter)
+            return nullptr;
+        
+        return new SQLDataWrapper<R>(FIELDS);
+    }
+
+private:
+    SQLDataWrapper(const struct SQLDataFields *FIELDS)
+    {
+        
+    }
+};
+
+#endif // SQLDATAWRAPPER_H
